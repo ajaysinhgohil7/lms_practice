@@ -1,0 +1,83 @@
+let nodeTypes = ['company', 'address', 'person', 'bankAccount', 'sanctionsList'];
+
+let edgeTypes = ['locate at', 'has a', 'belongs to', 'registered address', 'lives at'];
+
+let countries = ['INDIA', 'USA', 'CANADA', 'CHINA', 'RUSSIA', 'GERMANY'];
+
+let icons = [
+    'bank',    'officer',    'email',    'website',    'contract',
+    'users',    'balance',    'money',    'phone',    'sector',
+    'address',    'person',    'city',    'amount',    'account-number',
+    'customer',    'industry',    'country',    'intermediary',    'counterparty',
+    'company',    'male',    'business',    'ceo',    'url',
+    'ip-address',    'account',    'default',    'agreement',    'credit-card',
+    'state',    'corporate',    'user',    'entity',    'zip',
+    'percentage',    'transaction',    'invoice',    'transfer',    'subsidiar'
+   ];
+var possiblityOfAddress = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+data = {
+    edges:[],
+    nodes:[]
+};
+
+for (let i = 0; i < 50; i++) {
+
+    let node = {
+        id : null,
+        name:null,
+        country:null,
+        balance:null,
+        zip: null,
+        address: null,
+        icon : null,
+        isActive: null,
+        type: null
+    };
+    node.id = 'node'+i;
+    node.name='nodeName'+i;
+    node.country = countries[Math.floor(Math.random() * countries.length)];
+    node.balance = Math.floor(Math.random() * (100000 - 10000));
+    node.zip = Math.floor(Math.random() * (999999 - 10000));
+    let tempAddress = '';
+    let limitForAddress = 42;
+    for (let k = 0; k < limitForAddress; k++) {
+        tempAddress += possiblityOfAddress.charAt(Math.floor(Math.random() * possiblityOfAddress.length));        
+        if((k % 14) == 1){
+            tempAddress += ',';
+        }
+    }
+    tempAddress += ", " + node.zip;
+    node.address = tempAddress;
+    node.icon = icons[Math.floor(Math.random() * icons.length)];
+    
+    node.isActive = (Math.floor(Math.random()*2)) ? true : false;
+    node.type = nodeTypes[Math.floor(Math.random() * nodeTypes.length)];
+    data.nodes.push(node);
+}
+
+for (let j = 0; j < 100; j++) {
+
+    let edge = {
+        id:null,
+        name:null,
+        source : null,
+        target : null,
+        type : null
+    };
+
+    edge.id = 'edge'+j;
+    edge.name = 'edgeName'+j;
+    edge.source = data.nodes[Math.floor(Math.random() * data.nodes.length)].id;
+    let tempTarget = data.nodes[Math.floor(Math.random() * data.nodes.length)].id;
+    
+    while(tempTarget == edge.source){
+        tempTarget = data.nodes[Math.floor(Math.random() * data.nodes.length)].id;
+    }
+    
+    edge.target = tempTarget;
+    edge.type = edgeTypes[Math.floor(Math.random() * edgeTypes.length)];
+    data.edges.push(edge);
+}
+
+console.log(data);
+
